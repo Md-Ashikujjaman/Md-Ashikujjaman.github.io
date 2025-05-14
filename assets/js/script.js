@@ -211,7 +211,7 @@ form.addEventListener("submit", async function (e) {
   };
 
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyflpzQfcDYOdzRudfBD62JL9NoONvULztzhkzn9068Z1lxZOS1qvVZ1O4pQJtveVNz/exec", {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbxUgr28VcE3SGJ9GuxZnzGwDERJOp2UbK8FtGNuOcRh0IdJtjyT3Hc_j3d-PWKoi9gs/exec", {
       method: "POST",
       mode: "cors",
       headers: {
