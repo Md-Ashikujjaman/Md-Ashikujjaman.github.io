@@ -160,7 +160,7 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
 
 //Contact from to google sheet
-
+/*
   document.getElementById("contactForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -185,3 +185,51 @@ for (let i = 0; i < navigationLinks.length; i++) {
         alert("Failed to send message.");
       });
   });
+*/
+
+const form = document.getElementById("contactForm");
+const submitButton = form.querySelector(".form-btn");
+
+form.addEventListener("input", () => {
+  // Enable button when all fields are filled
+  const allFilled = [...form.querySelectorAll("[data-form-input]")].every(input => input.value.trim() !== "");
+  submitButton.disabled = !allFilled;
+});
+
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  submitButton.disabled = true;
+
+  const name = form.fullname.value.trim();
+  const email = form.email.value.trim();
+  const message = form.message.value.trim();
+
+  const formData = {
+    name,
+    email,
+    message
+  };
+
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbyflpzQfcDYOdzRudfBD62JL9NoONvULztzhkzn9068Z1lxZOS1qvVZ1O4pQJtveVNz/exec", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    if (response.ok) {
+      alert("✅ Message sent successfully!");
+      form.reset();
+    } else {
+      alert("❌ Failed to send message. Please try again.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("❌ Something went wrong.");
+  } finally {
+    submitButton.disabled = false;
+  }
+});
