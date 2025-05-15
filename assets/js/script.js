@@ -186,8 +186,11 @@ for (let i = 0; i < navigationLinks.length; i++) {
       });
   });
 */
-
-const form = document.getElementById("contactForm");
+//let form = document.getElementById("contactForm"); // First declaration
+// Later...
+//let contactForm = document.querySelector(".form");
+/*
+const contactForm  = document.getElementById("contactForm");
 const submitButton = form.querySelector(".form-btn");
 
 form.addEventListener("input", () => {
@@ -200,9 +203,9 @@ form.addEventListener("submit", async function (e) {
   e.preventDefault();
   submitButton.disabled = true;
 
-  const name = form.fullname.value.trim();
-  const email = form.email.value.trim();
-  const message = form.message.value.trim();
+  const name = contactForm .fullname.value.trim();
+  const email = contactForm .email.value.trim();
+  const message = contactForm .message.value.trim();
 
   const formData = {
     name,
@@ -233,3 +236,79 @@ form.addEventListener("submit", async function (e) {
     submitButton.disabled = false;
   }
 });
+*/
+
+
+/*
+  const contactform = document.getElementById("contactForm");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = {
+      name:contactform.name.value,
+      email: contactform.email.value,
+      message: contactform.message.value
+    };
+
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyVF-6QveIxYI_y-fdkTp8Ot54JrPtyf8ytcOvcE38pp-U3Ez6tyfBBbwJenjN6xXHmUA/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        alert("✅ Message sent!");
+        form.reset();
+      } else {
+        alert("❌ Failed to send.");
+      }
+    } catch (err) {
+      alert("❌ Error: " + err.message);
+    }
+  });
+
+*/
+
+  const contactForm = document.getElementById("contactForm");
+  const submitButton = contactForm.querySelector(".form-btn");
+
+  contactForm.addEventListener("input", () => {
+    const allFilled = [...contactForm.querySelectorAll("[data-form-input]")]
+      .every(input => input.value.trim() !== "");
+    submitButton.disabled = !allFilled;
+  });
+
+  contactForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    submitButton.disabled = true;
+
+    const formData = {
+      name: contactForm.fullname.value.trim(),
+      email: contactForm.email.value.trim(),
+      message: contactForm.message.value.trim()
+    };
+
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwnsGheI6u9VGKo6UgddkiPAveK0JXJy2NIpkNacNR8rewfEY5AD0ETzEansI30Omr5/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const resultText = await response.text();
+      document.body.innerHTML += `<div style="margin-top:20px;">${resultText}</div>`;
+    } catch (error) {
+      console.error("Error:", error);
+      alert("❌ Something went wrong.");
+    } finally {
+      contactForm.reset();
+      submitButton.disabled = true;
+    }
+  });
+
